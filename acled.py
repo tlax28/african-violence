@@ -1,5 +1,7 @@
 import zen
 import csv
+import sys
+sys.path.append('../zend3js/')
 import d3js
 
 # PUT THE .csv FILE IN THE SAME FOLDER AS THE .py FILE
@@ -47,7 +49,7 @@ for entry in acled1415new:
 
 
 # ====================== Visualisation ======================
-'''
+
 d3 = d3js.D3jsRenderer(acled1415graph, 
                         event_delay=0.1, 
                         #canvas_size = (1600,700), 
@@ -57,4 +59,4 @@ d3 = d3js.D3jsRenderer(acled1415graph,
 d3.update()
 
 d3.stop_server()
-'''
+
