@@ -1,0 +1,21 @@
+Authors:
+Han Swee Yee, Wang Yiran, Yeow Lih Wei
+
+Description:
+abcdefg
+
+Nodes:      ##
+Edges:      ##
+Clustering: ##
+Diameter:   ##
+
+Technical Details:
+It will contain details for each event, such as event type, day of event, actors involved and fatalities. There approximately 100,000+ rows of data (each row is an event that occurred in a day). 
+
+Data Source:
+CSV file from http://www.acleddata.com/data/version-6-data-1997-2015/
+
+Data Source Author / Organisation:
+Armed Conflict Location & Event Data Project
+
+
