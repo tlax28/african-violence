@@ -47,6 +47,10 @@ for entry in acled1415new:
     else:    # if the edge doesn't yet exist
         acled1415graph.add_edge(ACTOR1, ACTOR2, weight=1) # add edge with weight 1
 
+# ====================== Writing the .gml File ======================
+# File will be created in the current working directory
+zen.io.gml.write(acled1415graph, "acled1415graph.gml")
+
 
 # ====================== Visualisation ======================
 
