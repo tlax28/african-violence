@@ -14,6 +14,8 @@ if selectYear == "N":
 else:
 	selectYear = False
 
+selectByFatality = raw_input("Do you want to weigh the edges by count of events or fatalities? 1 for events, 2 for fatalities\n")
+
 ## Create the graph of interest
 acled_graph = zen.Graph()
 
@@ -50,8 +52,13 @@ with open('acled-2014-2015.csv') as mycsv:
 			to_process = False
 		
 		if to_process:
-			#Add graph
-			add_weight(acled_graph,row['ACTOR1'],row['ACTOR2'],1)
+			#Add the edge
+			if int(selectByFatality)==1:
+				add_weight(acled_graph,row['ACTOR1'],row['ACTOR2'],1)
+			else:
+				deathCount = int(row['FATALITIES'])
+				if deathCount > 0:
+					add_weight(acled_graph,row['ACTOR1'],row['ACTOR2'],deathCount)
 		else:
 			fail_count += 1
 
