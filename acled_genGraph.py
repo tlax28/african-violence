@@ -28,10 +28,11 @@ def add_weight(G,nodeA,nodeB,myValue):
 		G.add_edge(nodeA,nodeB,weight=myValue)
 
 fail_count = 0
-#ALERT
-#PUT THE .csv FILE IN THE SAME FOLDER AS THE .py FILE
-#'ACLED_all.csv'
-with open('acled-2014-2015.csv') as mycsv:
+
+#Reminder: Put the .csv source file in the SAME folder as this .py file
+#'acled-2014-2015.csv'
+
+with open('ACLED_all.csv') as mycsv:
 	reader = csv.DictReader(mycsv)
 	for row in reader:
 		#By default include row for processing
@@ -62,21 +63,24 @@ with open('acled-2014-2015.csv') as mycsv:
 		else:
 			fail_count += 1
 
-print acled_graph.num_nodes
-print fail_count
-
-## Referencing field entries
-##ACTOR1
-##ALLY_ACTOR_1
-##ACTOR2
-##ALLY_ACTOR_2
-##FATALITIES
-
+print "Number of nodes:",acled_graph.num_nodes
+#print fail_count
 
 ## ====================== Writing the .gml File ======================
 ## File will be created in the current working directory
-#zen.io.gml.write(acled1415graph, "acled1415graph.gml")
+fileName = "ACLED_Graph"
+if int(selectByFatality)==1:
+	fileName += "_Events"
+else:
+	fileName += "_Fatalities"
 
+if selectYear:
+	fileName += "_" + str(startYear) + "_" + str(endYear)
+
+fileName += ".gml"
+
+zen.io.gml.write(acled_graph, fileName)
+print "GML file with the name", fileName, "has been created."
 
 ## ====================== Visualisation ======================
 
