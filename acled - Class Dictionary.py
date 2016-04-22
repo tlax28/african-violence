@@ -51,8 +51,8 @@ def modularity(G,c):
 			if d[u] == d[v]: # if the two nodes belong in the same class,
 			    
 			    # int(True) = 1, int(False) = 0
-				Q += ( int(G.has_edge(v,u)) - G.degree(u)*G.degree(v)/float(G.num_edges) )/float(G.num_edges)
-				Qmax -= ( G.degree(u)*G.degree(v)/float(G.num_edges) )/float(G.num_edges)
+				Q += ( int(G.has_edge(v,u)) - G.degree(u)*G.degree(v)/(2*float(G.num_edges)) )/ (2*float(G.num_edges))
+				Qmax -= ( G.degree(u)*G.degree(v)/(2*float(G.num_edges)) )/(2*float(G.num_edges))
 	return Q, Qmax
 
 
@@ -61,8 +61,10 @@ class_Dict.pop(0, None)
 #G = zen.io.gml.read('acled1415graph(events).gml', weight_fxn=lambda x:x['weight'])
 G = zen.io.gml.read('acled1415graph(fatalities).gml', weight_fxn=lambda x:x['weight'])
 
-#testing = zen.algorithms.modularity(G, class_Dict, weighted=False)
+testing = zen.algorithms.modularity(G, class_Dict, weighted=False)
 
-Q, Qmax = modularity(G,class_Dict)
-print 'Modularity (Countries): %1.4f / %1.4f\n' % (Q,Qmax)
-print 'Normalised Modularity:", Q/Qmax
+print testing
+
+#Q, Qmax = modularity(G,class_Dict)
+#print 'Modularity (Countries): %1.4f / %1.4f\n' % (Q,Qmax)
+#print 'Normalised Modularity:', Q/Qmax
