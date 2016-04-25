@@ -20,7 +20,7 @@ def makeGraph(selectYear,selectByFatality,startYear=1997,endYear=2015):
 		else:
 			G.add_edge(nodeA,nodeB,weight=myValue)
 
-	with open('ACLED_all.csv') as mycsv:
+	with open('acled-all-clean.csv') as mycsv:
 		reader = csv.DictReader(mycsv)
 		for row in reader:
 			#By default include row for processing
