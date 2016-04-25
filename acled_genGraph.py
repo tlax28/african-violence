@@ -45,7 +45,7 @@ with open('ACLED_all.csv') as mycsv:
 				to_process = False
 		
 		#Do not include if actor1/2 are "NA" (only two-parties please)
-		if row['ACTOR1']== 'NA' or row['ACTOR2'] == 'NA':
+		if row['ACTOR1']== 'NA' or row['ACTOR2'] == 'NA' or row['ACTOR2'] =="":
 			to_process = False
 		
 		#Do not include self-edges

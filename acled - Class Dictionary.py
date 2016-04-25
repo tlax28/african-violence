@@ -20,22 +20,29 @@ def add_weight(G,nodeA,nodeB,myValue):
 #Reminder: Put the .csv source file in the SAME folder as this .py file
 #'ACLED_all.csv'
 
+### Following code prepares a dictionary of actor category values for later use
 class_Dict = {}
-
-for i in range(0, 9):
-    class_Dict[i] = []
-
 with open('acled-2014-2015.csv') as mycsv:
 	reader = csv.DictReader(mycsv)
 	for row in reader:
+		if row['ACTOR1'] in class_Dict:
+			pass
+		else:
+			class_Dict[row['ACTOR1']]=row['INTER1']
 		
-		if not (row['ACTOR1'] in class_Dict[int(row['INTER1'])] ):
-		    class_Dict[int(row['INTER1'])].append(row['ACTOR1'])
+		if row['ACTOR2'] in class_Dict:
+			pass
+		else:
+			class_Dict[row['ACTOR2']]=row['INTER2']
 		
-		if not (row['ACTOR2'] in class_Dict[int(row['INTER2'])] ):
-		    class_Dict[int(row['INTER2'])].append(row['ACTOR2'])
+		#if not (row['ACTOR1'] in class_Dict[int(row['INTER1'])] ):
+		    #class_Dict[int(row['INTER1'])].append(row['ACTOR1'])
 		
-
+		#if not (row['ACTOR2'] in class_Dict[int(row['INTER2'])] ):
+		    #class_Dict[int(row['INTER2'])].append(row['ACTOR2'])
+		
+		
+### Following modularity function is adapted from Module 4
 def modularity(G,c):
 	d = dict()
 	for k,v in c.iteritems(): # for Key 'k' and Value 'v' in the dictionary 'c'
@@ -56,15 +63,32 @@ def modularity(G,c):
 	return Q, Qmax
 
 
-class_Dict.pop(0, None)
+def size_of_Dict(myDict):
+	myCount = 0
+	for key in myDict:
+		myCount += len(myDict[key])
+	return myCount
+
+print len(class_Dict.keys())
 
 #G = zen.io.gml.read('acled1415graph(events).gml', weight_fxn=lambda x:x['weight'])
 G = zen.io.gml.read('acled1415graph(fatalities).gml', weight_fxn=lambda x:x['weight'])
+print G.num_nodes
 
-testing = zen.algorithms.modularity(G, class_Dict, weighted=False)
+### Generating the actual class dictionaries for use
+new_class_dict = {}
+for i in range(1,9):
+	new_class_dict[i] = []
 
-print testing
+for myNode in G.nodes_iter():
+	new_class_dict[int(class_Dict[myNode])].append(myNode)
 
-#Q, Qmax = modularity(G,class_Dict)
-#print 'Modularity (Countries): %1.4f / %1.4f\n' % (Q,Qmax)
-#print 'Normalised Modularity:', Q/Qmax
+### Now for actual modularity calculations
+print "=====================\n"
+
+testQ = zen.algorithms.modularity(G, new_class_dict, weighted=False)
+Q, Qmax = modularity(G,new_class_dict)
+print testQ
+print Q
+print 'Modularity (Countries): %1.4f / %1.4f' % (Q,Qmax)
+print 'Normalised Modularity:', Q/Qmax
