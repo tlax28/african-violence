@@ -13,8 +13,10 @@ if selectYear == "N":
 	selectYear = True
 else:
 	selectYear = False
+	startYear = 0
+	endYear = 0
 
-selectByFatality = raw_input("Do you want to weigh the edges by count of events or fatalities? 1 for events, 2 for fatalities\n")
+selectByFatality = int(raw_input("Do you want to weigh the edges by count of events or fatalities? 1 for events, 2 for fatalities\n"))
 
 ## Create the graph of interest
 acled_graph = zen.Graph()
@@ -27,44 +29,49 @@ def add_weight(G,nodeA,nodeB,myValue):
 	else:
 		G.add_edge(nodeA,nodeB,weight=myValue)
 
-fail_count = 0
 
 #Reminder: Put the .csv source file in the SAME folder as this .py file
 #'acled-2014-2015.csv'
 
-with open('ACLED_all.csv') as mycsv:
-	reader = csv.DictReader(mycsv)
-	for row in reader:
-		#By default include row for processing
-		to_process = True
-		
-		#Following statements change to_process depending on conditions
-		
-		if selectYear:
-			if int(row['YEAR'])> endYear or int(row['YEAR'])<startYear:
+def makeGraph(selectYear,selectByFatality,startYear=0,endYear=0):
+	fail_count = 0
+	with open('ACLED_all.csv') as mycsv:
+		reader = csv.DictReader(mycsv)
+		for row in reader:
+			#By default include row for processing
+			to_process = True
+			
+			#Following statements change to_process depending on conditions
+			
+			if selectYear:
+				if int(row['YEAR'])> endYear or int(row['YEAR'])<startYear:
+					to_process = False
+			
+			#Do not include if actor1/2 are "NA" (only two-parties please)
+			if row['ACTOR1']== 'NA' or row['ACTOR2'] == 'NA' or row['ACTOR2'] =="":
 				to_process = False
-		
-		#Do not include if actor1/2 are "NA" (only two-parties please)
-		if row['ACTOR1']== 'NA' or row['ACTOR2'] == 'NA' or row['ACTOR2'] =="":
-			to_process = False
-		
-		#Do not include self-edges
-		if row['ACTOR1']==row['ACTOR2']:
-			to_process = False
-		
-		if to_process:
-			#Add the edge
-			if int(selectByFatality)==1:
-				add_weight(acled_graph,row['ACTOR1'],row['ACTOR2'],1)
+			
+			#Do not include self-edges
+			if row['ACTOR1']==row['ACTOR2']:
+				to_process = False
+			
+			if to_process:
+				#Add the edge
+				if selectByFatality==1:
+					add_weight(acled_graph,row['ACTOR1'],row['ACTOR2'],1)
+				else:
+					deathCount = int(row['FATALITIES'])
+					if deathCount > 0:
+						add_weight(acled_graph,row['ACTOR1'],row['ACTOR2'],deathCount)
 			else:
-				deathCount = int(row['FATALITIES'])
-				if deathCount > 0:
-					add_weight(acled_graph,row['ACTOR1'],row['ACTOR2'],deathCount)
-		else:
-			fail_count += 1
+				fail_count += 1
 
-print "Number of nodes:",acled_graph.num_nodes
-#print fail_count
+	print "Number of nodes in generated graph:",acled_graph.num_nodes
+	#print fail_count
+	
+	return acled_graph
+
+myGraph = makeGraph(selectYear,selectByFatality,startYear,endYear)
 
 ## ====================== Writing the .gml File ======================
 ## File will be created in the current working directory
@@ -81,6 +88,8 @@ fileName += ".gml"
 
 zen.io.gml.write(acled_graph, fileName)
 print "GML file with the name", fileName, "has been created."
+
+
 
 ## ====================== Visualisation ======================
 
