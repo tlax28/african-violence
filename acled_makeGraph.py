@@ -8,6 +8,7 @@ import d3js
 #'acled-2014-2015.csv'
 
 def makeGraph(selectYear,selectByFatality,startYear=1997,endYear=2015):
+        print startYear, endYear
 	fail_count = 0
 	## Create the graph of interest
 	acled_graph = zen.Graph()
@@ -20,13 +21,15 @@ def makeGraph(selectYear,selectByFatality,startYear=1997,endYear=2015):
 		else:
 			G.add_edge(nodeA,nodeB,weight=myValue)
 
-	with open('acled-all-clean.csv') as mycsv:
+	with open('acled-all-clean-hell.csv') as mycsv:
 		reader = csv.DictReader(mycsv)
 		for row in reader:
 			#By default include row for processing
 			to_process = True
 			
 			#Following statements change to_process depending on conditions
+			
+			print row['YEAR'], len(row['YEAR']),
 			
 			if selectYear != "Y":
 				if int(row['YEAR'])> endYear or int(row['YEAR'])<startYear:
@@ -51,7 +54,7 @@ def makeGraph(selectYear,selectByFatality,startYear=1997,endYear=2015):
 			else:
 				fail_count += 1
 
-	print "Number of nodes in generated graph:",acled_graph.num_nodes
+	#print "Number of nodes in generated graph:",acled_graph.num_nodes
 	#print fail_count
 	
 	return acled_graph
