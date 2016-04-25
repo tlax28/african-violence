@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-# Clement Tan + Yeow Lih Wei， 1000948 + 1000974， 
-# Section 2 (Monday and Wednesday mornings) 
-# Module 4: Large-Scale Properties
-
 import zen
 import matplotlib.pyplot as plt  	# if matplotlib doesn't work comment this line out
 plt.ioff()							# if matplotlib doesn't work comment this line out
@@ -12,26 +7,13 @@ sys.path.append('../zend3js/')
 import d3js
 from time import sleep
 import random
+from acled_makeGraph import makeGraph
 
-def modularity(G,c):
-	d = dict()
-	for k,v in c.iteritems(): # for Key 'k' and Value 'v' in the dictionary 'c'
-		for n in v: # for each node in the group 'k',
-			d[n] = k # assign a group to the node 'n'
-			# 'd' now becomes a dictionary {node1: class1, node2: class2 ...}
-	
-	Q, Qmax = 0,1
-	
-	# for all pairs of nodes,
-	for u in G.nodes_iter():
-		for v in G.nodes_iter():		    
-			if d[u] == d[v]: # if the two nodes belong in the same class,
-			    
-			    # int(True) = 1, int(False) = 0
-				Q += ( int(G.has_edge(v,u)) - G.degree(u)*G.degree(v)/(2*float(G.num_edges)) )/ (2*float(G.num_edges))
-				Qmax -= ( G.degree(u)*G.degree(v)/(2*float(G.num_edges)) )/(2*float(G.num_edges))
-	return Q, Qmax
+### SET THE GRAPH HERE =====================================
+#G = zen.io.gml.read('acled1415graph(events).gml', weight_fxn=lambda x:x['weight'])
+#G = zen.io.gml.read('acled1415graph(fatalities).gml', weight_fxn=lambda x:x['weight'])
 
+G = makeGraph("N",2,2010,2015)
 
 ## Plots the degree distribution and calculates the power law coefficent
 def calc_powerlaw(G, kmin):
@@ -74,20 +56,48 @@ def calc_powerlaw(G, kmin):
 	#print '%i, %1.2f,  %1.2f' % (kmin, alpha,sigma)
 	plt.show()
 
-# SET THE GRAPH HERE =====================================
-G = zen.io.gml.read('acled1415graph(events).gml', weight_fxn=lambda x:x['weight'])
-#G = zen.io.gml.read('acled1415graph(fatalities).gml', weight_fxn=lambda x:x['weight'])
 
 
-# FIND COMPONENTS ========================================
+### FIND COMPONENTS ========================================
 components = zen.algorithms.components(G)   # returns a list of components, each component is a (set) of nodes in the component
 
 component_sizes = [len(component) for component in components]
 print "Size of largest component:" , max(component_sizes)
+print "Total number of nodes:", G.num_nodes
+print max(component_sizes)/float(G.num_nodes)
+component_sizes.sort()
+print component_sizes
+
+
+
+
+
+
+
+
+## Modularity calculations - Refer to other file! ========================
+#def modularity(G,c):
+	#d = dict()
+	#for k,v in c.iteritems(): # for Key 'k' and Value 'v' in the dictionary 'c'
+		#for n in v: # for each node in the group 'k',
+			#d[n] = k # assign a group to the node 'n'
+			## 'd' now becomes a dictionary {node1: class1, node2: class2 ...}
+	
+	#Q, Qmax = 0,1
+	
+	## for all pairs of nodes,
+	#for u in G.nodes_iter():
+		#for v in G.nodes_iter():		    
+			#if d[u] == d[v]: # if the two nodes belong in the same class,
+			    
+			    ## int(True) = 1, int(False) = 0
+				#Q += ( int(G.has_edge(v,u)) - G.degree(u)*G.degree(v)/(2*float(G.num_edges)) )/ (2*float(G.num_edges))
+				#Qmax -= ( G.degree(u)*G.degree(v)/(2*float(G.num_edges)) )/(2*float(G.num_edges))
+	#return Q, Qmax
 
 
 ## DIAMETER =============================================== WARNING! TAKES SUPER LONG.
 #print "\nDiameter:", zen.diameter(G) 
 
 ## POWER LAW ==============================================
-calc_powerlaw(G, 0)  # need to change kmin appropriately
+#calc_powerlaw(G, 0)  # need to change kmin appropriately
