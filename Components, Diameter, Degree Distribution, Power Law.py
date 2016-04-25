@@ -68,7 +68,17 @@ print max(component_sizes)/float(G.num_nodes)
 component_sizes.sort()
 print component_sizes
 
+## ====================== Visualisation ======================
 
+d3 = d3js.D3jsRenderer(G, 
+                        event_delay=0.1, 
+                        #canvas_size = (1600,700), 
+                        interactive=False, 
+                        autolaunch=True)
+
+d3.update()
+
+d3.stop_server()
 
 
 

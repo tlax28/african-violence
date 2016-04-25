@@ -3,6 +3,8 @@ import csv
 import sys
 sys.path.append('../zend3js/')
 import d3js
+from acled_makeGraph import makeGraph
+sourceFile = "acled-all-clean-hell.csv"
 
 #Query user on what gml file to generate
 
@@ -22,7 +24,7 @@ def add_weight(G,nodeA,nodeB,myValue):
 
 ### Following code prepares a dictionary of actor category values for later use
 class_Dict = {}
-with open('acled-2014-2015.csv') as mycsv:
+with open(sourceFile) as mycsv:
 	reader = csv.DictReader(mycsv)
 	for row in reader:
 		if row['ACTOR1'] in class_Dict:
@@ -72,7 +74,10 @@ def size_of_Dict(myDict):
 print len(class_Dict.keys())
 
 #G = zen.io.gml.read('acled1415graph(events).gml', weight_fxn=lambda x:x['weight'])
-G = zen.io.gml.read('acled1415graph(fatalities).gml', weight_fxn=lambda x:x['weight'])
+#G = zen.io.gml.read('acled1415graph(fatalities).gml', weight_fxn=lambda x:x['weight'])
+#print G.num_nodes
+
+G = makeGraph("Y",2,0,0)
 print G.num_nodes
 
 ### Generating the actual class dictionaries for use
