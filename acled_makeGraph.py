@@ -3,10 +3,21 @@ import csv
 import sys
 sys.path.append('../zend3js/')
 import d3js
+import unicodedata
 sourceFile = 'acled-all-clean-hell.csv'
 
 #Reminder: Put the .csv source file in the SAME folder as this .py file
 #'acled-2014-2015.csv'
+
+#This function adds an edge if not present, adds weight if edge is present:
+	def add_weight(G,nodeA,nodeB,myValue):
+		nodeA = unicodedata.normalize('NFKD',nodeA.decode('cp1252')).encode('ascii','ignore')
+		nodeB = unicodedata.normalize('NFKD',nodeB.decode('cp1252')).encode('ascii','ignore')
+		if G.has_edge(nodeA,nodeB):
+			myWeight = G.weight(nodeA,nodeB)+myValue
+			G.set_weight(nodeA,nodeB,myWeight)
+		else:
+			G.add_edge(nodeA,nodeB,weight=myValue)
 
 def makeGraph(selectYear,selectByFatality,startYear=1997,endYear=2015):
     #print startYear, endYear
@@ -14,13 +25,7 @@ def makeGraph(selectYear,selectByFatality,startYear=1997,endYear=2015):
 	## Create the graph of interest
 	acled_graph = zen.Graph()
 
-	#This function adds an edge if not present, adds weight if edge is present:
-	def add_weight(G,nodeA,nodeB,myValue):
-		if G.has_edge(nodeA,nodeB):
-			myWeight = G.weight(nodeA,nodeB)+myValue
-			G.set_weight(nodeA,nodeB,myWeight)
-		else:
-			G.add_edge(nodeA,nodeB,weight=myValue)
+	
 
 	with open(sourceFile) as mycsv:
 		reader = csv.DictReader(mycsv)
