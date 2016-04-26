@@ -14,7 +14,7 @@ import pprint
 
 ### SET THE GRAPH HERE =====================================
 # The other graph is: 'ACLED_Graph_Fatalities.gml'
-gml_file = ''ACLED_Graph_Events.gml'
+gml_file = 'ACLED_Graph_Events.gml'
 G = zen.io.gml.read(gml_file, weight_fxn=lambda x:x['weight'])
 
 #G = makeGraph("N",2,2005,2005)
