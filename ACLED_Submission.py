@@ -26,7 +26,7 @@ print "Number of edges:", G.num_edges
 print "Diameter:", 
 
 D,P = zen.algorithms.shortest_path.all_pairs_shortest_path_(G)
-D1 = ma.masked_invalid(D)
+D1 = ma.masked_invalid(D) # Masks 'inf', changes it to 'NaN'
 print nanmax(D1)
 
 ### Degree/Eigenvector centralities calculation
@@ -48,13 +48,18 @@ def index_of_max(v):
 	return where(v == max(v))[0]
 	
 print '\nDegree Centrality:'
+A = G.matrix()
+N = G.num_nodes
 G.compact()
 v = [A[i].sum() for i in range(N)] 
 print_top(G, v, num=20)
 
-# Eigenvector Centrality
+# Eigenvector Centrality (Iterative Method)
 print '\nEigenvector Centrality (by Zen):'
-v = zen.algorithms.centrality.eigenvector_centrality_(G, weighted=True)
+v = ones(N)
+for i in range(200):
+    v = dot(A, v)
+    v = v/linalg.norm(v)
 print_top(G, v, num=20)
 
 
@@ -194,4 +199,4 @@ print 'Normalised Modularity:', Q/Qmax
 
 # POWER LAW ==============================================
 print "\n=====================\nPower law calculations"
-calc_powerlaw(G, 0)  # need to change kmin appropriately
+calc_powerlaw(G, 1)  # need to change kmin appropriately
