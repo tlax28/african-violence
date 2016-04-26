@@ -1,0 +1,55 @@
+Authors:
+
+Han Swee Yee, Wang Yiran, Yeow Lih Wei
+
+
+
+Description:
+
+A network of political violence and protest data for Africa (undirected, weighted). Nodes are actors of each event (governments, militias, organisations etc.) and actors are linked if they are involved in the same event. 
+
+The weight of each edge is determined by event count (number of events that they co-appear in) or by fatality count (number of people who died due to the events that they co-appear in). Thus, two networks are created (one by events, another by fatalities).
+
+
+
+All Years (Events)
+ "ACLED_Graph_Events.gml"
+Nodes: 3536
+
+Edges: 7542
+
+Global Clustering Coefficient: 0.0880138323387
+
+
+Diameter: 14.0
+
+All Years (Fatalities)
+ "ACLED_Graph_Fatalities.gml"
+Nodes: 2380
+
+Edges: 4363
+
+Global Clustering Coefficient: 0.0937252243453
+
+
+Diameter: 15.0
+
+Technical Details: 
+The data source contains details for each event, such as event type, day of event, actors involved and fatalities. There approximately 100,000+ rows of data (each row is an event that occurred in a day). 
+Each actor has a code that relates them to a particular group (governments, militias, organisations etc.)
+. Only events that involve 2 actors are included in the network.
+
+
+
+
+Data Source:
+
+CSV file from http://www.acleddata.com/data/version-6-data-1997-2015/
+
+ 
+For more information, codebook available at http://www.acleddata.com/wp-content/uploads/2016/01/ACLED_Codebook_2016.pdf
+
+Data Source Author / Organisation:
+
+Armed Conflict Location & Event Data Project
+
