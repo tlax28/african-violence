@@ -13,9 +13,9 @@ import pprint
 
 
 ### SET THE GRAPH HERE =====================================
-gml_file = 'acled1415graph(events).gml'
+# The other graph is: 'ACLED_Graph_Fatalities.gml'
+gml_file = ''ACLED_Graph_Events.gml'
 G = zen.io.gml.read(gml_file, weight_fxn=lambda x:x['weight'])
-#G = zen.io.gml.read('acled1415graph(fatalities).gml', weight_fxn=lambda x:x['weight'])
 
 #G = makeGraph("N",2,2005,2005)
 
@@ -23,7 +23,11 @@ G = zen.io.gml.read(gml_file, weight_fxn=lambda x:x['weight'])
 ### Introductory calculations ===============================
 print "Number of nodes:", G.num_nodes
 print "Number of edges:", G.num_edges
-print "Diameter:", zen.diameter(G)
+print "Diameter:", 
+
+D,P = zen.algorithms.shortest_path.all_pairs_shortest_path_(G)
+D1 = ma.masked_invalid(D)
+print nanmax(D1)
 
 ### Degree/Eigenvector centralities calculation
 print "\n===================================\nCentrality Calculations:"
