@@ -2,12 +2,24 @@ Authors:
 Han Swee Yee, Wang Yiran, Yeow Lih Wei
 
 Description:
-abcdefg
+A network of political violence and protest data for Africa (undirected, weighted). Nodes are actors of each event (governments, militias, organisations etc.) and actors are linked in they are involved in the same event.  
+The dataset encodes the dates and locations of all reported political violence and protest events, the parties involved and number of fatalities
+
 
 Nodes:      ##
 Edges:      ##
 Clustering: ##
 Diameter:   ##
+
+All Years (Events)
+No. of Nodes: 3536
+No. of Edges: 7542
+Global Clustering Coefficient: 0.0880138323387
+
+All Years (Fatalities)
+No. of Nodes: 2380
+No. of Edges: 4363
+Global Clustering Coefficient: 0.0937252243453
 
 Technical Details:
 It will contain details for each event, such as event type, day of event, actors involved and fatalities. There approximately 100,000+ rows of data (each row is an event that occurred in a day). 
