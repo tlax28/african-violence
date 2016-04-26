@@ -3,8 +3,9 @@ import csv
 import sys
 sys.path.append('../zend3js/')
 import d3js
-from acled_makeGraph import makeGraph
+from acled_makeGraph import *
 sourceFile = "acled-all-clean-hell.csv"
+import pprint
 
 #Query user on what gml file to generate
 
@@ -37,6 +38,63 @@ with open(sourceFile) as mycsv:
 		else:
 			class_Dict[row['ACTOR2']]=row['INTER2']
 		
+		#if not (row['ACTOR1'] in class_Dict[int(row['INTER1'])] ):
+		    #class_Dict[int(row['INTER1'])].append(row['ACTOR1'])
+		
+		#if not (row['ACTOR2'] in class_Dict[int(row['INTER2'])] ):
+		    #class_Dict[int(row['INTER2'])].append(row['ACTOR2'])
+
+
+### Following code prepares a dictionary of actor category values for later use
+country_Dict = {}
+
+country_Dict2 = {}
+with open(sourceFile) as mycsv:
+	reader = csv.DictReader(mycsv)
+	for row in reader:
+		if row['ACTOR1'] in country_Dict:
+			#Check for conflicts
+			if row['COUNTRY'] in country_Dict[row['ACTOR1']]:
+				#There's no conflict!
+				pass
+			else:
+				country_Dict[row['ACTOR1']].append(row['COUNTRY'])
+				#print row['ACTOR1'], country_Dict[row['ACTOR1']]
+		else:
+			country_Dict[row['ACTOR1']]=[row['COUNTRY']]
+		
+		if row['ACTOR2'] in country_Dict2:
+			#Check for conflicts
+			if row['COUNTRY'] in country_Dict2[row['ACTOR2']]:
+				#There's no conflict!
+				pass
+			else:
+				country_Dict2[row['ACTOR2']].append(row['COUNTRY'])
+				#print row['ACTOR2'], country_Dict[row['ACTOR2']]
+		else:
+			country_Dict2[row['ACTOR2']]=[row['COUNTRY']]
+	print "Country generation complete!"
+
+## Quick check of country dictionary
+myC = 0
+for key in country_Dict.keys():
+	if len(country_Dict[key])>1:
+		#to try and process these issues manually
+		if " of " in key:
+			if "Government of" in key or "Police Forces of" in key or "Military Forces of" in key:
+				if key.find("(") == -1:
+					myName = key[(key.find(" of ")+4):]
+				else:
+					myName = key[(key.find(" of ")+4):key.find(" (")]
+				#print "\nNew:" , myName, "\nOld:", key
+				country_Dict[key] = myName
+		elif key.find("(") != -1:
+			myName = key[(key.find("(")+1):(key.find(")"))]
+			print "\nNew:" , myName, "\nOld:", key
+		myC += 1
+		#print myC, key, country_Dict[key]
+
+
 		#if not (row['ACTOR1'] in class_Dict[int(row['INTER1'])] ):
 		    #class_Dict[int(row['INTER1'])].append(row['ACTOR1'])
 		
@@ -77,23 +135,31 @@ print len(class_Dict.keys())
 #G = zen.io.gml.read('acled1415graph(fatalities).gml', weight_fxn=lambda x:x['weight'])
 #print G.num_nodes
 
-G = makeGraph("Y",2,0,0)
-print G.num_nodes
+#G = makeGraph("Y",2,0,0)
+#print G.num_nodes
 
-### Generating the actual class dictionaries for use
-new_class_dict = {}
-for i in range(1,9):
-	new_class_dict[i] = []
+#G = makeBattleGraph("Y",2,0,0)
+#print G.num_nodes
 
-for myNode in G.nodes_iter():
-	new_class_dict[int(class_Dict[myNode])].append(myNode)
+#### Generating the actual class dictionaries for use
+#new_class_dict = {}
+#for i in range(1,9):
+	#new_class_dict[i] = []
 
-### Now for actual modularity calculations
-print "=====================\n"
+#for myNode in G.nodes():
+	#if int(class_Dict[myNode])==8:
+		#G.rm_node(myNode)
+	#else:
+		#new_class_dict[int(class_Dict[myNode])].append(myNode)
 
-testQ = zen.algorithms.modularity(G, new_class_dict, weighted=False)
-Q, Qmax = modularity(G,new_class_dict)
-print testQ
-print Q
-print 'Modularity (Countries): %1.4f / %1.4f' % (Q,Qmax)
-print 'Normalised Modularity:', Q/Qmax
+##pprint.pprint(new_class_dict)
+
+#### Now for actual modularity calculations
+#print "\n=====================\n"
+
+#testQ = zen.algorithms.modularity(G, new_class_dict, weighted=False)
+#Q, Qmax = modularity(G,new_class_dict)
+#print testQ
+#print Q
+#print 'Modularity (Countries): %1.4f / %1.4f' % (Q,Qmax)
+#print 'Normalised Modularity:', Q/Qmax

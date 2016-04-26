@@ -13,8 +13,9 @@ from acled_makeGraph import makeGraph
 #G = zen.io.gml.read('acled1415graph(events).gml', weight_fxn=lambda x:x['weight'])
 #G = zen.io.gml.read('acled1415graph(fatalities).gml', weight_fxn=lambda x:x['weight'])
 
-G = makeGraph("N",2,2010,2015)
-
+G = makeGraph("N",2,2005,2005)
+print G.num_nodes
+print "Diameter:", zen.diameter(G)
 ## Plots the degree distribution and calculates the power law coefficent
 def calc_powerlaw(G, kmin):
 	ddist = zen.degree.ddist(G,normalize=False)
@@ -59,26 +60,26 @@ def calc_powerlaw(G, kmin):
 
 
 ### FIND COMPONENTS ========================================
-components = zen.algorithms.components(G)   # returns a list of components, each component is a (set) of nodes in the component
+#components = zen.algorithms.components(G)   # returns a list of components, each component is a (set) of nodes in the component
 
-component_sizes = [len(component) for component in components]
-print "Size of largest component:" , max(component_sizes)
-print "Total number of nodes:", G.num_nodes
-print max(component_sizes)/float(G.num_nodes)
-component_sizes.sort()
-print component_sizes
+#component_sizes = [len(component) for component in components]
+#print "Size of largest component:" , max(component_sizes)
+#print "Total number of nodes:", G.num_nodes
+#print max(component_sizes)/float(G.num_nodes)
+#component_sizes.sort()
+#print component_sizes
 
-## ====================== Visualisation ======================
+### ====================== Visualisation ======================
 
-d3 = d3js.D3jsRenderer(G, 
-                        event_delay=0.1, 
-                        #canvas_size = (1600,700), 
-                        interactive=False, 
-                        autolaunch=True)
+#d3 = d3js.D3jsRenderer(G, 
+                        #event_delay=0.1, 
+                        ##canvas_size = (1600,700), 
+                        #interactive=False, 
+                        #autolaunch=True)
 
-d3.update()
+#d3.update()
 
-d3.stop_server()
+#d3.stop_server()
 
 
 

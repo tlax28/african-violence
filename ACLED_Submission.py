@@ -19,6 +19,8 @@ G = zen.io.gml.read(gml_file, weight_fxn=lambda x:x['weight'])
 
 #G = makeGraph("N",2,2005,2005)
 
+
+### Introductory calculations ===============================
 print "Number of nodes:", G.num_nodes
 print "Number of edges:", G.num_edges
 print "Diameter:", zen.diameter(G)
@@ -26,7 +28,30 @@ print "Diameter:", zen.diameter(G)
 ### Degree/Eigenvector centralities calculation
 print "\n===================================\nCentrality Calculations:"
 
+# prints the top five (num) nodes according to the centrality vector v
+# v takes the form: v[nidx] is the centrality of node with index nidx
+def print_top(G,v, num=5):
+	idx_list = [(i,v[i]) for i in range(len(v))]
+	idx_list = sorted(idx_list, key = lambda x: x[1], reverse=True)
+	for i in range(min(num,len(idx_list))):
+		nidx, score = idx_list[i]
+		print '  %i. %s (%1.4f)' % (i+1,G.node_object(nidx),score)
+		#print '  %i. %s' % (i+1,G.node_object(idx))
 
+# returns the index of the maximum of the array
+# if two or more indices have the same max value, the first index is returned
+def index_of_max(v):
+	return where(v == max(v))[0]
+	
+print '\nDegree Centrality:'
+G.compact()
+v = [A[i].sum() for i in range(N)] 
+print_top(G, v, num=20)
+
+# Eigenvector Centrality
+print '\nEigenvector Centrality (by Zen):'
+v = zen.algorithms.centrality.eigenvector_centrality_(G, weighted=True)
+print_top(G, v, num=20)
 
 
 ## Plots the degree distribution and calculates the power law coefficent
